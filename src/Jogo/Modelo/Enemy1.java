@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.security.SecureRandom;
 import java.util.Random;
-
 import javax.swing.ImageIcon;
 
 public class Enemy1 {
@@ -14,19 +13,12 @@ public class Enemy1 {
 	private boolean isVisivel;
 	private static int START = 9;
 	private static int END = 3;
+	private static int VELOCIDADE = 2;
+//	private static final int LARGURA = 938;
 	
-	
-
 	Random rand = new SecureRandom();
-	String imagePath = String.format( //
-		    "res\\lixo%d.png", //
-		    rand.nextInt(Math.abs(START - END) + 1) + END //
-		);
-	
-	//private static final int LARGURA =938;
-	private static int VELOCIDADE=2;
-	
-	
+	String imagePath = String.format("res\\lixo%d.png", rand.nextInt(Math.abs(START - END) + 1) + END);
+
 	public Enemy1(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -37,19 +29,19 @@ public class Enemy1 {
 		ImageIcon referencia = new ImageIcon(imagePath);
 		imagem = referencia.getImage();
 		
-		this.largura=imagem.getWidth(null);
+		this.largura = imagem.getWidth(null);
 		this.altura = imagem.getHeight(null);
 	}
 	
 	public void update() {
 		this.y += VELOCIDADE;
-		//if(this.x> LARGURA) {
-			//isVisivel = false;
+//		if (this.x > LARGURA) {
+//			isVisivel = false;
+//		}
 	}
 	
-	
-	public Rectangle getBounds(){
-		return new Rectangle (x,y,largura,altura);
+	public Rectangle getBounds() {
+		return new Rectangle (x, y, largura, altura);
 	}
 
 	public boolean isVisivel() {
@@ -79,8 +71,4 @@ public class Enemy1 {
 	public Image getImagem() {
 		return imagem;
 	}
-	
-	
-	
-	
 }

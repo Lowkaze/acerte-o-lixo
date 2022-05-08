@@ -3,13 +3,10 @@ package Jogo.Modelo;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 
 public class Player {
-	private int x,y;
+	private int x, y;
 	private int dx, dy;
 	private Image imagem;
 	private int altura, largura;
@@ -22,45 +19,38 @@ public class Player {
 	}
 	
 	public void load() {
-		ImageIcon referencia = new ImageIcon("res\\Garbage_sorting.png");
+		ImageIcon referencia = new ImageIcon("res\\lixeira.png");
 		imagem = referencia.getImage();
 		altura = imagem.getHeight(null);
 		largura = imagem.getWidth(null);
 	}
 	
 	public void update() {
-		x+=dx;
-		y+=dy;
+		x += dx;
+		y += dy;
 	}
 	
-	
-	public Rectangle getBounds(){
-		return new Rectangle (x,y,largura,altura);
+	public Rectangle getBounds() {
+		return new Rectangle (x, y, largura, altura);
 	}
 	
 	public void keyPressed(KeyEvent tecla) {
-		int codigo =tecla.getKeyCode();
+		int codigo = tecla.getKeyCode();
 		if (codigo == KeyEvent.VK_LEFT) {
-			dx=-3;
+			dx = -3;
+		} else if (codigo == KeyEvent.VK_RIGHT) {
+			dx = 3;
 		}
-		if (codigo == KeyEvent.VK_RIGHT) {
-			dx=3;
-		}
-	
 	}	
 	
 	public void keyRelease(KeyEvent tecla) {
-		int codigo =tecla.getKeyCode();
+		int codigo = tecla.getKeyCode();
 		if (codigo == KeyEvent.VK_LEFT) {
-			dx=0;
+			dx = 0;
+		} else if (codigo == KeyEvent.VK_RIGHT) {
+			dx = 0;
 		}
-		if (codigo == KeyEvent.VK_RIGHT) {
-			dx=0;
-		}
-	
 	}
-	
-	
 
 	public boolean isVisivel() { 
 		return isVisivel;
@@ -81,9 +71,4 @@ public class Player {
 	public Image getImagem() {
 		return imagem;
 	}
-
-
-	
-	
-	
 }
