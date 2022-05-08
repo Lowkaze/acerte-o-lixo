@@ -9,6 +9,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,43 +20,55 @@ import javax.swing.Timer;
 
 public class Fase extends JPanel implements ActionListener {
 	private Image fundo;
+	private Image newgame;
 	private Player player;
 	private Timer timer;
 	private List<Enemy1> enemy1;
-    private boolean emJogo;
+    private boolean emJogo = false;
 	private int pontuacao = 0;
 	
 	public Fase() {
 		setFocusable(true);
 		setDoubleBuffered(true);
 		
-		this.definirFundo();
+		this.definirImagens();
 		
 		player = new Player();
 		player.load();
 		
 		addKeyListener(new TecladoAdapter());
-		
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent event) {
+				if (emJogo == false) {
+					emJogo = true;
+					repaint();
+				}
+			}
+		});
+				
 		timer = new Timer(5, this);
 		timer.start();
 		
 		inicializaInimigos();
-		emJogo = true;
 	}
 	
-	public void definirFundo() {
+	public void definirImagens() {
 		int nmFundo = new Random().nextInt(6);
 		ImageIcon referencia = new ImageIcon("res\\fundo" + nmFundo + ".png");
 		this.fundo = referencia.getImage();
+		
+		ImageIcon newgame = new ImageIcon("res\\newgame.png");
+		this.newgame = newgame.getImage();
 	}
 	
 	public void inicializaInimigos() {
-		int qtdDeInimigos = 20;
+		int qtdDeInimigos = 50;
 		enemy1 = new ArrayList<Enemy1>();
 		
 		for (int i = 0; i < qtdDeInimigos; i++) {
 			int x = (int) (Math.random() * 700 + 30);
-			int y = (int) (Math.random() * (-600) + 100);
+			int y = (int) (Math.random() * (-10000) + 100);
 			enemy1.add(new Enemy1(x, y));
 		}
 	}
@@ -65,6 +79,7 @@ public class Fase extends JPanel implements ActionListener {
 		if (emJogo == true) {
 			g2d.drawImage(fundo, 0, 0, null);
 			g2d.drawImage(player.getImagem(), player.getX(), player.getY(), this);
+
 			this.exibirPontuacao(g2d);
 			
 			for (int o = 0; o < enemy1.size(); o++) {
@@ -73,8 +88,10 @@ public class Fase extends JPanel implements ActionListener {
 				g2d.drawImage(in.getImagem(), in.getX(), in.getY(), this);
 			}
 		} else {
-			ImageIcon fimJogo = new ImageIcon("res\\gameover.png");
-			g2d.drawImage(fimJogo.getImage(), 0, 0, null);
+			g2d.drawImage(newgame, 0, 0, null);
+//			g2d.drawString("CLIQUE PARA INICIAR", 50, 340);
+//			ImageIcon fimJogo = new ImageIcon("res\\gameover.png");
+//			g2d.drawImage(fimJogo.getImage(), 0, 0, null);
 		}
 
 		g.dispose();
@@ -86,23 +103,24 @@ public class Fase extends JPanel implements ActionListener {
 		g2d.drawString("Pontuação: " + this.pontuacao, 5, 28);
 	}
 	
-	@Override
 	public void actionPerformed(ActionEvent e) {
-		player.update();
-		
-		///// Erro está abaixo		
-		for (int o = 0; o < enemy1.size(); o++) {
-			Enemy1 in = enemy1.get(o);
+		if (emJogo == true) {
+			player.update();
 			
-			if (in.isVisivel()) {
-				in.update();
-			} else {
-				enemy1.remove(o);
+			///// Erro está abaixo
+			for (int o = 0; o < enemy1.size(); o++) {
+				Enemy1 in = enemy1.get(o);
+				
+				if (in.isVisivel()) {
+					in.update();
+				} else {
+					enemy1.remove(o);
+				}
 			}
+			
+			checarColisoes();
+			repaint();	
 		}
-		
-		checarColisoes();
-		repaint();		
 	}
 	
 	public void checarColisoes() {

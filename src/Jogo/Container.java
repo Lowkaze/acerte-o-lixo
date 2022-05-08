@@ -6,7 +6,7 @@ import Jogo.Modelo.Fase;
 public class Container extends JFrame {
 	public Container() {
 		add(new Fase());
-		setTitle("Salve o Mundo");
+		setTitle("Acerte o lixo");
 		setSize(750, 680);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);

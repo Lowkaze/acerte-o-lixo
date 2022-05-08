@@ -13,7 +13,7 @@ public class Enemy1 {
 	private boolean isVisivel;
 	private static int START = 9;
 	private static int END = 3;
-	private static int VELOCIDADE = 2;
+	private static double VELOCIDADE = 1.25;
 //	private static final int LARGURA = 938;
 	
 	Random rand = new SecureRandom();
@@ -52,7 +52,7 @@ public class Enemy1 {
 		this.isVisivel = isVisivel;
 	}
 
-	public static int getVELOCIDADE() {
+	public static double getVELOCIDADE() {
 		return VELOCIDADE;
 	}
 
